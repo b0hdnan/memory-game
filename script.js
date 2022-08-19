@@ -35,9 +35,10 @@ for (let i = 0; i < playCards.length; i++) {
 	playCards[i].setAttribute("id", i); // встановлюємо id для кожної картки
 	playCards[i].addEventListener("click", function () {
 	this.style.backgroundImage = `url(${shuffleArray[i].img})`; // з'являється зображення
+	if (choosenCardsId.every(item => item !== this.id )){
 	choosenCards.push(shuffleArray[this.id].name) // додаємо ім'я картки в масив вибраних карток
   choosenCardsId.push(this.id)	// додаємо Id картки в масив вибраних карток Id
-
+	}
 	// якщо в масивах дві картки...
   if (choosenCards.length === 2) {
 		setTimeout(function (){ // відстрочка виконання функції
