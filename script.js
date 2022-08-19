@@ -37,7 +37,7 @@ for (let i = 0; i < playCards.length; i++) {
 	this.style.backgroundImage = `url(${shuffleArray[i].img})`; // з'являється зображення
 	choosenCards.push(shuffleArray[this.id].name) // додаємо ім'я картки в масив вибраних карток
   choosenCardsId.push(this.id)	// додаємо Id картки в масив вибраних карток Id
-
+console.log(choosenCards);
 	// якщо в масивах дві картки...
   if (choosenCards.length === 2) {
 		setTimeout(function (){ // відстрочка виконання функції
