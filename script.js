@@ -24,8 +24,8 @@ const cards = [
 	}
 ];
 // додаткові масиви
-var  choosenCards = [];
-var  choosenCardsId = [];
+var choosenCards = [];
+var choosenCardsId = [];
 
 
 
@@ -34,38 +34,56 @@ var playCards = document.querySelectorAll("div.box");
 for (let i = 0; i < playCards.length; i++) {
 	playCards[i].setAttribute("id", i); // встановлюємо id для кожної картки
 	playCards[i].addEventListener("click", function () {
-	this.style.backgroundImage = `url(${shuffleArray[i].img})`; // з'являється зображення
-	if (choosenCardsId.every(item => item !== this.id )){
-	choosenCards.push(shuffleArray[this.id].name) // додаємо ім'я картки в масив вибраних карток
-  choosenCardsId.push(this.id)	// додаємо Id картки в масив вибраних карток Id
-	}
-	// якщо в масивах дві картки...
-  if (choosenCards.length === 2) {
-		setTimeout(function (){ // відстрочка виконання функції
-			if (choosenCards[0] === choosenCards[1]){
-				// приховуємо картки
-				playCards[choosenCardsId[0]].style.visibility = "hidden";
-				playCards[choosenCardsId[1]].style.visibility = "hidden";
-			}
-			else{
-				playCards[choosenCardsId[0]].style.backgroundImage = "none";
-				playCards[choosenCardsId[1]].style.backgroundImage = "none";
-			}
-			choosenCards = [];
-			choosenCardsId = [];
-		}, 500)
-	}
 
+		if (choosenCardsId.every(item => item !== this.id) && choosenCards.length < 2) {
+			choosenCards.push(shuffleArray[this.id].name) // додаємо ім'я картки в масив вибраних карток
+			choosenCardsId.push(this.id)	// додаємо Id картки в масив вибраних карток Id
+			this.style.backgroundImage = `url(${shuffleArray[i].img})`; // з'являється зображення
+			this.style.backgroundColor = "rgb(126, 196, 56)";
+		}
+		// якщо в масивах дві картки...
+
+		if (choosenCards.length === 2) {
+			setTimeout(function () { // відстрочка виконання функції
+				if (choosenCards[0] === choosenCards[1]) {
+					// приховуємо картки, захист від неіснуючого елементу
+					if (choosenCards[0]) playCards[choosenCardsId[0]].style.visibility = "hidden";
+					if (choosenCards[1]) playCards[choosenCardsId[1]].style.visibility = "hidden";
+				}
+				else {
+					if (choosenCardsId[0]) playCards[choosenCardsId[0]].style.backgroundImage = "none";
+					if (choosenCardsId[1]) playCards[choosenCardsId[1]].style.backgroundImage = "none";
+				}
+				if (choosenCards[0]) playCards[choosenCardsId[0]].style.backgroundColor = "#eee";
+				if (choosenCards[1]) playCards[choosenCardsId[1]].style.backgroundColor = "#eee";
+				choosenCards = [];
+				choosenCardsId = [];
+			}, 1000)
+		}
+		console.log(choosenCards);
 	});
 }
 // подвоєний масив карток і підготовлений для гри масив shuffleArray
 let array = [...cards, ...cards],
 	shuffleArray = array.sort(() => 0.5 - Math.random());
 
+// cекундомір
+var sec = 0;
+function initSec() {
+	sec = 0;
+	setInterval(tick, 1000);
+}
+
+function tick() {
+	sec++;
+	let timer = document.getElementById("timer");
+	timer.innerText = sec;
+}
+
+initSec();
 
 
-
-
+localStorage.setItem('bgColor', 'green');
 
 
 
