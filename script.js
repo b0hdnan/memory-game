@@ -26,7 +26,7 @@ const cards = [
 // додаткові масиви
 var choosenCards = [];
 var choosenCardsId = [];
-
+var points = 0;
 
 
 // перебираємо картки
@@ -49,6 +49,7 @@ for (let i = 0; i < playCards.length; i++) {
 					// приховуємо картки, захист від неіснуючого елементу
 					if (choosenCards[0]) playCards[choosenCardsId[0]].style.visibility = "hidden";
 					if (choosenCards[1]) playCards[choosenCardsId[1]].style.visibility = "hidden";
+					points++;
 				}
 				else {
 					if (choosenCardsId[0]) playCards[choosenCardsId[0]].style.backgroundImage = "none";
@@ -75,9 +76,13 @@ function initSec() {
 }
 
 function tick() {
-	sec++;
+	if (points < 5) sec++;
 	let timer = document.getElementById("timer");
-	timer.innerText = sec;
+	if (points < 5) timer.innerText = sec;
+	else
+		if (sec % 10 === 1) timer.innerText = sec + " секунда!";
+		else if (sec % 10 === 2 && sec % 10 === 3 && sec % 10 === 4) timer.innerText = sec + " секунди!";
+		else timer.innerText = sec + " секунд!";
 }
 
 initSec();
