@@ -1,3 +1,6 @@
+var sound = new Audio();
+sound.src = "music/game.mp3"
+sound.play();
 // масив карток
 const cards = [
 	{
@@ -89,6 +92,4 @@ initSec();
 
 
 localStorage.setItem('bgColor', 'green');
-
-
 
