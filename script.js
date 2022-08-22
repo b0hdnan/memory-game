@@ -1,6 +1,10 @@
-var sound = new Audio();
-sound.src = "music/game.mp3"
-sound.play();
+var sound1 = new Audio();
+var sound2 = new Audio();
+var sound3 = new Audio();
+sound1.src = "music/game.mp3";
+sound2.src = "music/lose.mp3";
+sound3.src = "music/win.mp3";
+sound1.play();
 // масив карток
 const cards = [
 	{
@@ -53,10 +57,12 @@ for (let i = 0; i < playCards.length; i++) {
 					if (choosenCards[0]) playCards[choosenCardsId[0]].style.visibility = "hidden";
 					if (choosenCards[1]) playCards[choosenCardsId[1]].style.visibility = "hidden";
 					points++;
+					sound3.play();
 				}
 				else {
 					if (choosenCardsId[0]) playCards[choosenCardsId[0]].style.backgroundImage = "none";
 					if (choosenCardsId[1]) playCards[choosenCardsId[1]].style.backgroundImage = "none";
+					sound2.play();
 				}
 				if (choosenCards[0]) playCards[choosenCardsId[0]].style.backgroundColor = "#eee";
 				if (choosenCards[1]) playCards[choosenCardsId[1]].style.backgroundColor = "#eee";
