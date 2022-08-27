@@ -113,7 +113,7 @@ function tick() {
 	else { // кінець гри
 		clearInterval(timerId) // вимкнули секундомір
 		timer.innerText = sec + " seconds";
-		if (userRecordsNumbers.every(element => element > sec)) {
+		if (userRecordsNumbers.every(element => element > sec) || userRecordsNumbers.length == 0)  {
     userName = prompt();
 		userRecord = sec;
 
