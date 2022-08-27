@@ -1,5 +1,6 @@
 var savedNames = localStorage.getItem("winners");
 var savedRecords = localStorage.getItem("records");
+if (localStorage.getItem("winners") != null) {
 var userNames = localStorage.getItem("winners").split(",");
 var userRecords = localStorage.getItem("records").split(",");
 var userRecordsNumbers = [];
@@ -14,7 +15,7 @@ for(let i = 0; i<userNames.length; i++){
 recordsText.innerHTML += "<br>";
 recordsText.innerHTML += userNames[i] + " " + userRecords[i];
 }
-
+}
 var sound1 = new Audio();
 var sound2 = new Audio();
 var sound3 = new Audio();
