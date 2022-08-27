@@ -1,31 +1,54 @@
+// захист від роботи з неіснуючими ключами
 if (localStorage.getItem("winners") == null) {
-	localStorage.setItem("winners","unknown");
-	localStorage.setItem("records","50");
+	localStorage.setItem("winners", "unknown");
+	localStorage.setItem("records", "50");
 }
-
+// оголошення глобальних змінних
+// зчитуємо ключі
 var savedNames = localStorage.getItem("winners");
 var savedRecords = localStorage.getItem("records");
-var userNames = localStorage.getItem("winners").split(",");
-var userRecords = localStorage.getItem("records").split(",");
-var userRecordsNumbers = [];
+// функція виведення рекордів в таблицю
+function recordsOutput() {
+	// переходимо до масивів
+	var userNames = savedNames.split(",");
+	var userRecords = savedRecords.split(",");
+	// числовий	 масив рекордів
+	var userRecordsNumbers = [];
+	// формуємо числовий масив рекордів
+	userRecords.forEach(element => {
+		userRecordsNumbers.push(parseInt(element, 10));
+	});
+	// формується таблиця результатів рекордів
+	for (let i = 0; i < userNames.length; i++) {
+		recordsText.innerHTML += "<br>";
+		recordsText.innerHTML += userNames[i] + " " + userRecords[i];
+	}
+}
+// проміжні змінні для збереження поточних результатів
 var userName = "";
 var userRecord = "";
+// рахівник cекунд
+var sec = 0;
+// спеціальний код таймера, за допомогою якого ми його зупинимо
+var timerId = 0;
+// вибір візуального елемента текст таблиці рекордів
 var recordsText = document.getElementById("records");
-userRecords.forEach(element =>{
-	userRecordsNumbers.push(parseInt(element, 10));
-});
-
-for(let i = 0; i<userNames.length; i++){
-recordsText.innerHTML += "<br>";
-recordsText.innerHTML += userNames[i] + " " + userRecords[i];
-}
-
+var timer = document.getElementById("timer");
+// звуки
 var sound1 = new Audio();
 var sound2 = new Audio();
 var sound3 = new Audio();
 sound1.src = "music/game.mp3";
 sound2.src = "music/lose.mp3";
 sound3.src = "music/win.mp3";
+// додаткові масиви
+var choosenCards = [];
+var choosenCardsId = [];
+// набрані бали
+var points = 0;
+// перебираємо картки
+var playCards = document.querySelectorAll("div.box");
+// програємо фон
 sound1.play();
 // масив карток
 const cards = [
@@ -52,14 +75,7 @@ const cards = [
 		img: "https://github.com/robgmerrill/img/blob/master/sass-logo.png?raw=true"
 	}
 ];
-// додаткові масиви
-var choosenCards = [];
-var choosenCardsId = [];
-var points = 0;
-
-
-// перебираємо картки
-var playCards = document.querySelectorAll("div.box");
+recordsOutput()// виведення рекордів
 for (let i = 0; i < playCards.length; i++) {
 	playCards[i].setAttribute("id", i); // встановлюємо id для кожної картки
 	playCards[i].addEventListener("click", function () {
@@ -75,11 +91,10 @@ for (let i = 0; i < playCards.length; i++) {
 		if (choosenCards.length === 2) {
 			setTimeout(function () { // відстрочка виконання функції
 				if (choosenCards[0] === choosenCards[1] && choosenCards[0] != undefined && choosenCards[1] != undefined) {
-					console.log(choosenCards[0],choosenCards[0])
 					// приховуємо картки, захист від неіснуючого елементу
 					if (choosenCards[0]) playCards[choosenCardsId[0]].style.visibility = "hidden";
 					if (choosenCards[1]) playCards[choosenCardsId[1]].style.visibility = "hidden";
-					points++; console.log(points);
+					points++;
 					sound3.play();
 				}
 				else {
@@ -93,67 +108,37 @@ for (let i = 0; i < playCards.length; i++) {
 				choosenCardsId = [];
 			}, 800)
 		}
-		console.log(choosenCards);
+
 	});
 }
 // подвоєний масив карток і підготовлений для гри масив shuffleArray
 let array = [...cards, ...cards],
 	shuffleArray = array.sort(() => 0.5 - Math.random());
-
-var timerId = 0;
-// cекундомір
-var sec = 0;
-function initSec() {
-	sec = 0;
-	timerId = setInterval(tick, 1000);
-}
-
+// ініціалізація cекундоміра
+var initSec = () => timerId = setInterval(tick, 1000);
+// Щосекундна функція
 function tick() {
-	let timer = document.getElementById("timer");
-	if (points < 5){
+	if (points < 5) {
 		sec++;
-	if (points < 5) timer.innerText = sec;
-}
+		timer.innerText = sec;
+	}
 	else { // кінець гри
-		console.log(userRecordsNumbers);
-		clearInterval(timerId) // вимкнули секундомір
+		clearInterval(timerId) // вимкнули секундомір setTimeout
+		// виводимо результати
 		timer.innerText = sec + " seconds";
-		if (userRecordsNumbers.every(element => element > sec)){
-    userName = prompt();
-		userRecord = sec;
-
-		savedRecords += "," + userRecord;
-		savedNames += "," + userName;
-
-		console.log(savedRecords);
-		console.log(savedNames);
-
-			localStorage.setItem("records", savedRecords); // записали результат гравця
-      localStorage.setItem("winners", savedNames);
-
-			userNames = localStorage.getItem("winners").split(",");
-			userRecords = localStorage.getItem("records").split(",");
-
-			userRecordsNumbers = [];
-
-      userRecords.forEach(element =>{
-	    userRecordsNumbers.push(parseInt(element, 10));
+		// зчитування імені гравця, якиц побив хоча б один рекорд і запис його в таблицю
+		if (userRecordsNumbers.some(element => element > sec)) {
+			userName = prompt(); // зчитали з поля вводу
+			userRecord = sec; // записали час
+			savedRecords += "," + userRecord; // додали в рядок тексту
+			savedNames += "," + userName; // додали в рядок тексту
+			localStorage.setItem("records", savedRecords); // записали результат гравця в пам'ять браузера
+			localStorage.setItem("winners", savedNames);
+			recordsOutput()// виведення рекордів
 		}
-			);
-
-			recordsText.innerHTML = "NEW RECORDS";
-
-			for(let i = 0; i < userNames.length; i++){
-				recordsText.innerHTML += "<br>";
-				recordsText.innerHTML += userNames[i] + " " + userRecords[i];
-			}
-}
-
 	}
 } // кінець гри
-
-
-initSec();
+initSec(); // запуск секундоміра
 
 
 
