@@ -1,7 +1,16 @@
+@import url(https://fonts.googleapis.com/css2?family=Alike&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Londrina+Shadow&display=swap);
 body{
 	background: #000;
 	color:aliceblue;
 	text-align: center;
+	font-family: 'Londrina Shadow', display;
+	}
+	h1{
+		font-size: 50px;
+		border-radius: 10px;
+		margin: 20px auto;
+letter-spacing: 10px;
 	}
 	.game{
 	display: flex;
@@ -17,10 +26,7 @@ body{
 		border-radius: 10px;
 		background: center / cover #eee;
 		cursor: pointer;
-		transition: all .5s ease-in-out;
-	}
-	.box:active{
-		transform: rotate(10deg),
+		transition: all .2s ease-in-out;
 	}
 	@media(min-width: 1100px){
 		.game{
@@ -32,6 +38,34 @@ body{
 		}
 	}
 	.time{
-		font-size: 24px;
+		font-size: 44px;
 		margin: 10px;
+		background: #130;
+		width: fit-content;
+		border-radius: 10px;
+		margin: 20px auto;
 	}
+	.timer{
+		color: rgb(220, 230, 37);
+		letter-spacing: 10px;
+	}
+	.records{
+		font-family: 'Alike', serif;
+		font-size: 24px;
+		width: 25%;
+		position: fixed;
+		right: 0;
+		top: 0;
+		background: rgb(230, 37, 37);
+		max-height: 70px;
+		overflow: hidden;
+		border-radius: 0 0 0 100%;
+		line-height: 50px;
+		transition: all 1s cubic-bezier(0.23, 1, 0.320, 1);
+	}
+	.records:hover{
+		overflow: visible;
+		max-height: fit-content;
+		border-radius: 0 0 0 20%;
+	}
+

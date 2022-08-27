@@ -1,3 +1,20 @@
+var savedNames = localStorage.getItem("winners");
+var savedRecords = localStorage.getItem("records");
+var userNames = localStorage.getItem("winners").split(",");
+var userRecords = localStorage.getItem("records").split(",");
+var userRecordsNumbers = [];
+var userName = "";
+var userRecord = "";
+var recordsText = document.getElementById("records");
+userRecords.forEach(element =>{
+	userRecordsNumbers.push(parseInt(element, 10));
+});
+
+for(let i = 0; i<userNames.length; i++){
+recordsText.innerHTML += "<br>";
+recordsText.innerHTML += userNames[i] + " " + userRecords[i];
+}
+
 var sound1 = new Audio();
 var sound2 = new Audio();
 var sound3 = new Audio();
@@ -46,17 +63,18 @@ for (let i = 0; i < playCards.length; i++) {
 			choosenCards.push(shuffleArray[this.id].name) // додаємо ім'я картки в масив вибраних карток
 			choosenCardsId.push(this.id)	// додаємо Id картки в масив вибраних карток Id
 			this.style.backgroundImage = `url(${shuffleArray[i].img})`; // з'являється зображення
-			this.style.backgroundColor = "rgb(126, 196, 56)";
+			this.style.backgroundColor = "#eee";
 		}
 		// якщо в масивах дві картки...
 
 		if (choosenCards.length === 2) {
 			setTimeout(function () { // відстрочка виконання функції
-				if (choosenCards[0] === choosenCards[1]) {
+				if (choosenCards[0] === choosenCards[1] && choosenCards[0] != undefined && choosenCards[1] != undefined) {
+					console.log(choosenCards[0],choosenCards[0])
 					// приховуємо картки, захист від неіснуючого елементу
 					if (choosenCards[0]) playCards[choosenCardsId[0]].style.visibility = "hidden";
 					if (choosenCards[1]) playCards[choosenCardsId[1]].style.visibility = "hidden";
-					points++;
+					points++; console.log(points);
 					sound3.play();
 				}
 				else {
@@ -68,7 +86,7 @@ for (let i = 0; i < playCards.length; i++) {
 				if (choosenCards[1]) playCards[choosenCardsId[1]].style.backgroundColor = "#eee";
 				choosenCards = [];
 				choosenCardsId = [];
-			}, 1000)
+			}, 800)
 		}
 		console.log(choosenCards);
 	});
@@ -77,25 +95,60 @@ for (let i = 0; i < playCards.length; i++) {
 let array = [...cards, ...cards],
 	shuffleArray = array.sort(() => 0.5 - Math.random());
 
+var timerId = 0;
 // cекундомір
 var sec = 0;
 function initSec() {
 	sec = 0;
-	setInterval(tick, 1000);
+	timerId = setInterval(tick, 1000);
 }
 
 function tick() {
-	if (points < 5) sec++;
 	let timer = document.getElementById("timer");
+	if (points < 5){
+		sec++;
 	if (points < 5) timer.innerText = sec;
-	else
-		if (sec % 10 === 1) timer.innerText = sec + " секунда!";
-		else if (sec % 10 === 2 && sec % 10 === 3 && sec % 10 === 4) timer.innerText = sec + " секунди!";
-		else timer.innerText = sec + " секунд!";
 }
+	else { // кінець гри
+		clearInterval(timerId) // вимкнули секундомір
+		timer.innerText = sec + " seconds";
+		if (userRecordsNumbers.every(element => element > sec)) {
+    userName = prompt();
+		userRecord = sec;
+
+		savedRecords += "," + userRecord;
+		savedNames += "," + userName;
+
+		console.log(savedRecords);
+		console.log(savedNames);
+
+			localStorage.setItem("records", savedRecords); // записали результат гравця
+      localStorage.setItem("winners", savedNames);
+
+			userNames = localStorage.getItem("winners").split(",");
+			userRecords = localStorage.getItem("records").split(",");
+
+			userRecordsNumbers = [];
+
+      userRecords.forEach(element =>{
+	    userRecordsNumbers.push(parseInt(element, 10));
+		}
+			);
+
+			recordsText.innerHTML = "NEW RECORDS";
+
+			for(let i = 0; i < userNames.length; i++){
+				recordsText.innerHTML += "<br>";
+				recordsText.innerHTML += userNames[i] + " " + userRecords[i];
+			}
+}
+
+	}
+} // кінець гри
+
 
 initSec();
 
 
-localStorage.setItem('bgColor', 'green');
+
 
