@@ -111,6 +111,7 @@ function tick() {
 	if (points < 5) timer.innerText = sec;
 }
 	else { // кінець гри
+		console.log(userRecordsNumbers);
 		clearInterval(timerId) // вимкнули секундомір
 		timer.innerText = sec + " seconds";
 		if (userRecordsNumbers.every(element => element > sec) || userRecordsNumbers.length == 0)  {
