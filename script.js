@@ -7,23 +7,10 @@ if (localStorage.getItem("winners") == null) {
 // зчитуємо ключі
 var savedNames = localStorage.getItem("winners");
 var savedRecords = localStorage.getItem("records");
-// функція виведення рекордів в таблицю
-function recordsOutput() {
-	// переходимо до масивів
-	var userNames = savedNames.split(",");
-	var userRecords = savedRecords.split(",");
-	// числовий	 масив рекордів
-	var userRecordsNumbers = [];
-	// формуємо числовий масив рекордів
-	userRecords.forEach(element => {
-		userRecordsNumbers.push(parseInt(element, 10));
-	});
-	// формується таблиця результатів рекордів
-	for (let i = 0; i < userNames.length; i++) {
-		recordsText.innerHTML += "<br>";
-		recordsText.innerHTML += userNames[i] + " " + userRecords[i];
-	}
-}
+// проміжні масиви для запису даних
+var userNames = [];
+var userRecords = [];
+var userRecordsNumbers = [];
 // проміжні змінні для збереження поточних результатів
 var userName = "";
 var userRecord = "";
@@ -75,6 +62,25 @@ const cards = [
 		img: "https://github.com/robgmerrill/img/blob/master/sass-logo.png?raw=true"
 	}
 ];
+
+// функція виведення рекордів в таблицю
+function recordsOutput() {
+	// переходимо до масивів
+	userNames = savedNames.split(",");
+	userRecords = savedRecords.split(",");
+	// числовий	 масив рекордів
+	userRecordsNumbers = [];
+	// формуємо числовий масив рекордів
+	userRecords.forEach(element => {
+		userRecordsNumbers.push(parseInt(element, 10));
+	});
+	// формується таблиця результатів рекордів
+	for (let i = 0; i < userNames.length; i++) {
+		recordsText.innerHTML += "<br>";
+		recordsText.innerHTML += userNames[i] + " " + userRecords[i];
+	}
+}
+
 recordsOutput()// виведення рекордів
 for (let i = 0; i < playCards.length; i++) {
 	playCards[i].setAttribute("id", i); // встановлюємо id для кожної картки
@@ -126,6 +132,7 @@ function tick() {
 		clearInterval(timerId) // вимкнули секундомір setTimeout
 		// виводимо результати
 		timer.innerText = sec + " seconds";
+		console.log(userRecordsNumbers);
 		// зчитування імені гравця, якиц побив хоча б один рекорд і запис його в таблицю
 		if (userRecordsNumbers.some(element => element > sec)) {
 			userName = prompt(); // зчитали з поля вводу
