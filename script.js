@@ -1,6 +1,6 @@
 // захист від роботи з неіснуючими ключами
 if (localStorage.getItem("winners") == null) {
-	localStorage.setItem("winners", "unknown");
+	localStorage.setItem("winners", "Тарас Іванченко");
 	localStorage.setItem("records", "50");
 }
 // оголошення глобальних змінних
@@ -74,10 +74,23 @@ function recordsOutput() {
 	userRecords.forEach(element => {
 		userRecordsNumbers.push(parseInt(element, 10));
 	});
+	// сортуємо за зростанням рекорди
+	for (let j = 0; j < userNames.length - 1; j++) {
+	for (let i = 0; i < userNames.length - 1 || i == 0; i++) {
+		let x = 0, y = "";
+		if (userRecordsNumbers[i] > userRecordsNumbers[i + 1]) {
+			x = userRecordsNumbers[i]; y = userNames[i];
+			userRecordsNumbers[i] = userRecordsNumbers[i + 1]; userNames[i] = userNames[i + 1];
+			userRecordsNumbers[i + 1] = x; userNames[i + 1] = y;
+		}
+	}
+}
+	console.log(userNames);
+	console.log(userRecordsNumbers);
 	// формується таблиця результатів рекордів
 	for (let i = 0; i < userNames.length; i++) {
 		recordsText.innerHTML += "<br>";
-		recordsText.innerHTML += userNames[i] + " " + userRecords[i];
+		recordsText.innerHTML += userNames[i] + ": " + userRecordsNumbers[i];
 	}
 }
 
@@ -132,9 +145,9 @@ function tick() {
 		clearInterval(timerId) // вимкнули секундомір setTimeout
 		// виводимо результати
 		timer.innerText = sec + " seconds";
-		console.log(userRecordsNumbers);
 		// зчитування імені гравця, якиц побив хоча б один рекорд і запис його в таблицю
 		if (userRecordsNumbers.some(element => element > sec)) {
+			recordsText.innerHTML = "NEW RECORDS!"; // новий рекорд!
 			userName = prompt(); // зчитали з поля вводу
 			userRecord = sec; // записали час
 			savedRecords += "," + userRecord; // додали в рядок тексту
@@ -143,6 +156,7 @@ function tick() {
 			localStorage.setItem("winners", savedNames);
 			recordsOutput()// виведення рекордів
 		}
+		else recordsText.innerHTML = "RECORDS";
 	}
 } // кінець гри
 initSec(); // запуск секундоміра
