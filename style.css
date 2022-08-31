@@ -30,7 +30,7 @@ h1 {
 	border-radius: 10px;
 	background: center / cover #eee;
 	cursor: pointer;
-	transition: all .2s ease-in-out;
+	transition: all .1s ease-in-out;
 }
 
 @media(min-width: 600px) {
@@ -76,10 +76,10 @@ h1 {
 	letter-spacing: 10px;
 }
 
-.records {
+.records, .start {
 	font-family: 'Alike', serif;
 	font-size: 0.4em;
-	width: 25%;
+	width: 15%;
 	position: fixed;
 	right: 0;
 	top: 0;
@@ -90,10 +90,24 @@ h1 {
 	border: 2px dotted white;
 	line-height: 4em;
 	transition: all 1s cubic-bezier(0.23, 1, 0.320, 1);
+	cursor: pointer;
+	transition: all 1s ease-out;
+}
+.start{
+	border-radius: 0 0 70% 0;
+	left: 0;
 }
 
 .records:hover {
-	overflow: visible;
-	max-height: fit-content;
+	text-align: left;
+	padding-left: 20px;
+	overflow: scrollY;
+	max-height: 100vh;
 	border-radius: 0 0 0 20%;
+	background: #000;
+	transition: all 1s ease-out;
+}
+
+.records:active, .start:active{
+	background: #000;
 }
